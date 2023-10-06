@@ -36,7 +36,7 @@ const img19 =
 const img20 =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4aDf0xsh_aZy15oK9reac0aoBJpTGJ-bdAZQ-rvIToOiKZNpfphroKMDxotBv4WJTQJY&usqp=CAU";
 
-const Shelf = () => {
+const NewShelf = () => {
   //products array
   const newProduct = [
     { id: 1, img: img1, name: "product 1" },
@@ -61,27 +61,32 @@ const Shelf = () => {
     { id: 20, img: img20, name: "product 20" },
   ];
 
+  //set new id for elements when drag
   const [proId, setProId] = useState(1);
 
   //number of shelfs
   const [row, setRow] = useState(3);
 
-  let isDraggingFromShelfParent = false; // Flag to indicate drag from shelfParent
-
+  //when drag function start
   const handleDragStart = (event, id, where) => {
     console.log("handleDragStart event", event);
     console.log("handleDragStart where", where);
     event.dataTransfer.setData("text", id);
     event.dataTransfer.setData("place", where);
-    isDraggingFromShelfParent = true; // Set the flag for drag from shelfParent
   };
 
-  const handleDrop = (event, index, where) => {
+  //when drag function hovering
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  //when drag function drop
+  const handleDrop = (event, rowIndex) => {
     const place = event.dataTransfer.getData("place");
 
     if (place === "cloneFromNewProducts") {
-      // Cloning logic
       event.preventDefault();
+
       const productId = event.dataTransfer.getData("text");
       const product = newProduct.find(
         (item) => item.id.toString() === productId
@@ -93,6 +98,9 @@ const Shelf = () => {
       clonedProduct.draggable = true;
       clonedProduct.className = "clonedProduct";
       clonedProduct.id = proId;
+      clonedProduct.style.width = `50px`;
+      clonedProduct.style.marginTop = `5px`;
+      clonedProduct.style.marginLeft = `5px`;
 
       clonedProduct.addEventListener("dragstart", (event) =>
         handleDragStart(event, proId, "moveFromShelf")
@@ -101,74 +109,99 @@ const Shelf = () => {
         handleDragEnd(event)
       );
 
-      const rect = event.target.getBoundingClientRect();
-      const offsetX = event.clientX - rect.left;
-      const offsetY = event.clientY - rect.top;
+      // Get the <td> elements for the current row
+      const tdElements = document.querySelectorAll(`#table-${rowIndex} td`);
 
-      const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
+      // Find the closest <td> based on the mouse position
+      const mouseX = event.clientX;
+      let closestDistance = Infinity;
+      let closestTd = null;
 
-      if (distance < 50) {
-        // alert("Cannot drop.");
-        console.log("Product already exists at this location. Cannot drop.");
-        return;
+      for (let i = 0; i < tdElements.length; i++) {
+        const rect = tdElements[i].getBoundingClientRect();
+        const tdCenterX = rect.left + rect.width / 2;
+        const distance = Math.abs(mouseX - tdCenterX);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestTd = tdElements[i];
+        }
       }
 
-      clonedProduct.style.position = "absolute";
-      clonedProduct.style.left = `${offsetX - 15}px`;
-      clonedProduct.style.top = `${offsetY - 15}px`;
-      clonedProduct.style.width = `50px`;
-
-      const rowParent = document.getElementById(`row-${index}`);
-      if (rowParent) {
-        rowParent.appendChild(clonedProduct);
+      // Check if the closest <td> already contains an image
+      if (!closestTd.hasChildNodes()) {
+        // Append the cloned product to the closest <td>
+        closestTd.appendChild(clonedProduct);
+        setProId(proId + 1);
       } else {
-        console.error(`Row parent with ID row-${index} not found.`);
+        console.log("Cannot drop. TD already contains an image.");
       }
-      setProId(proId + 1);
     } else if (place === "moveFromShelf") {
-      // Moving logic
       event.preventDefault();
+
       const productId = event.dataTransfer.getData("text");
       const productElement = document.getElementById(productId);
 
-      const rect = event.target.getBoundingClientRect();
-      const offsetX = event.clientX - rect.left;
-      const offsetY = event.clientY - rect.top;
+      // Find the closest <td> based on the mouse position
+      const mouseX = event.clientX;
+      let closestDistance = Infinity;
+      let closestTd = null;
 
-      const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
+      const tdElements = document.querySelectorAll(`#table-${rowIndex} td`);
 
-      if (distance < 50) {
-        // alert("Cannot drop.");
-        console.log("Product already exists at this location. Cannot drop.");
-        return;
+      for (let i = 0; i < tdElements.length; i++) {
+        const rect = tdElements[i].getBoundingClientRect();
+        const tdCenterX = rect.left + rect.width / 2;
+        const distance = Math.abs(mouseX - tdCenterX);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestTd = tdElements[i];
+        }
       }
 
-      if (productElement) {
-        productElement.style.position = "absolute";
-        productElement.style.left = `${offsetX - 15}px`;
-        productElement.style.top = `${offsetY - 15}px`;
-
-        const rowParent = document.getElementById(`row-${index}`);
-        if (rowParent) {
-          rowParent.appendChild(productElement);
-        } else {
-          console.error(`Row parent with ID row-${index} not found.`);
-        }
+      // Check <td> already contains an image
+      if (!closestTd.hasChildNodes()) {
+        // Move the product to the closest <td>
+        closestTd.appendChild(productElement);
       } else {
-        console.error(`Product element with ID ${productId} not found.`);
+        console.log("Cannot drop. TD already contains an image.");
       }
     }
   };
 
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
+  //when drag function end
   const handleDragEnd = (event) => {
     event.preventDefault();
     const draggedProduct = event.target;
     draggedProduct.style.position = "absolute";
   };
+
+  //remove the image from <td> when drag and drop the image outside shelfParent
+  const handleDocumentDrop = (event) => {
+    event.preventDefault();
+    const productId = event.dataTransfer.getData("text");
+    const productElement = document.getElementById(productId);
+
+    if (productElement) {
+      // Check if the drop is outside the shelfParent
+      const shelfParent = document.querySelector(".shelfParent");
+      if (!shelfParent.contains(event.target)) {
+        // Remove the product from the respective td
+        const tdParent = productElement.parentElement;
+        if (tdParent) {
+          tdParent.removeChild(productElement);
+        }
+      }
+    }
+  };
+
+  const handleDocumentDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  document.addEventListener("drop", handleDocumentDrop);
+  document.addEventListener("dragover", handleDocumentDragOver);
 
   return (
     <>
@@ -176,29 +209,39 @@ const Shelf = () => {
 
       <div style={{ display: "flex" }}>
         <div className="newProductParent">
-          {newProduct.map((product) => (
+          {newProduct.map((item) => (
             <button
               className="newProductChild"
-              key={product.id}
+              key={item.id}
               draggable
               onDragStart={(event) =>
-                handleDragStart(event, product.id, "cloneFromNewProducts")
+                handleDragStart(event, item.id, "cloneFromNewProducts")
               }
             >
-              <img src={product.img} alt={product.name} />
+              <img src={item.img} alt={item.name} />
             </button>
           ))}
         </div>
 
         <div className="shelfParent">
-          {[...Array(row)].map((_, index) => (
-            <div
-              key={index}
-              id={`row-${index}`}
-              onDrop={(event) => handleDrop(event, index, "dropInShelfParent")}
+          {[...Array(row)].map((_, rowIndex) => (
+            <table
+              key={rowIndex}
+              id={`table-${rowIndex}`}
+              onDrop={(event) =>
+                handleDrop(event, rowIndex, "dropInShelfParent")
+              }
               onDragOver={handleDragOver}
               className="rowParent"
-            ></div>
+            >
+              <tbody style={{ width: "100%" }}>
+                <tr className="tableRow">
+                  {[...Array(15)].map((_, colIndex) => (
+                    <td className="tableData" key={colIndex}></td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           ))}
         </div>
       </div>
@@ -228,4 +271,4 @@ const Shelf = () => {
   );
 };
 
-export default Shelf;
+export default NewShelf;
