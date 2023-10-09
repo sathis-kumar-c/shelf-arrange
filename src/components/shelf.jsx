@@ -1,71 +1,56 @@
-import { useState } from "react";
-
-const img1 = "https://cdn-icons-png.flaticon.com/512/4329/4329542.png";
-const img2 = "https://cdn-icons-png.flaticon.com/512/859/859415.png";
-const img3 = "https://cdn-icons-png.flaticon.com/512/3076/3076091.png";
-const img4 = "https://cdn-icons-png.flaticon.com/512/4329/4329538.png";
-const img5 = "https://cdn-icons-png.flaticon.com/512/4506/4506077.png";
-const img6 =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQHIty1AD6UqfXbm9rdm_7HdCN8LgMTkENQg&usqp=CAU";
-const img7 =
-  "https://icon-library.com/images/snacks-icon-png/snacks-icon-png-16.jpg";
-const img8 =
-  "https://icons.veryicon.com/png/o/food--drinks/food-icon/soda-1.png";
-const img9 = "https://cdn-icons-png.flaticon.com/512/683/683974.png";
-const img10 = "https://icon-library.com/images/snacks-icon/snacks-icon-15.jpg";
-
-const img11 =
-  "https://cdn1.iconfinder.com/data/icons/food-drinks-solid/128/Snacks_Cold_Drink_Bottle_Finger_Chips_French_Fries-512.png";
-
-const img12 =
-  "https://cdn4.iconfinder.com/data/icons/drinks-glyph/64/can_lipo_glyph-512.png";
-
-const img13 =
-  "https://cdn3.iconfinder.com/data/icons/drinks-beverages/91/Drinks__Beverages_27-512.png";
-const img14 =
-  "https://cdn4.iconfinder.com/data/icons/summer-182/512/summer11-512.png";
-const img15 =
-  "https://as1.ftcdn.net/v2/jpg/01/91/51/92/1000_F_191519272_jW8uVmVH1HTNAQfn9fB8a6DAqJRjcuNB.jpg";
-const img16 =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB2ZgUIvUxQoSO6w06Hd1wT3XQFzBTAnHHdA&usqp=CAU";
-const img17 = "https://cdn-icons-png.flaticon.com/512/1051/1051948.png";
-
-const img18 = "https://cdn-icons-png.flaticon.com/512/947/947859.png";
-const img19 =
-  "https://weinersltd.com/cdn/shop/products/31284-Frito-Lay-Flavor-Mix-Chips-Snacks-Variety-Pack-front4_1024x1024@2x.jpg?v=1634088322";
-const img20 =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4aDf0xsh_aZy15oK9reac0aoBJpTGJ-bdAZQ-rvIToOiKZNpfphroKMDxotBv4WJTQJY&usqp=CAU";
+import React, { Children, useEffect, useState } from "react";
+import jsonData from "../data/shelf.json";
+import img1 from "../images/RACK/Slice 1.png";
+import img2 from "../images/RACK/Slice 2.png";
+import img3 from "../images/RACK/Slice 3.png";
+import img4 from "../images/RACK/Slice 4.png";
+import img5 from "../images/RACK/Slice 5.png";
+import img6 from "../images/RACK/Slice 6.png";
+import img7 from "../images/RACK/Slice 7.png";
+import img8 from "../images/RACK/Slice 8.png";
+import img9 from "../images/RACK/Slice 9.png";
+import img10 from "../images/RACK/Slice 10.png";
+import img11 from "../images/RACK/Slice 11.png";
+import img12 from "../images/RACK/Slice 12.png";
+import img13 from "../images/RACK/Slice 13.png";
+import img14 from "../images/RACK/Slice 14.png";
+import img15 from "../images/RACK/Slice 15.png";
+import img16 from "../images/RACK/Slice 16.png";
+import img17 from "../images/RACK/Slice 17.png";
+import img18 from "../images/RACK/Slice 18.png";
+import img19 from "../images/RACK/Slice 19.png";
+import img20 from "../images/RACK/Slice 20.png";
 
 const NewShelf = () => {
   //products array
   const newProduct = [
-    { id: 1, img: img1, name: "product 1" },
-    { id: 2, img: img2, name: "product 2" },
-    { id: 3, img: img3, name: "product 3" },
-    { id: 4, img: img4, name: "product 4" },
-    { id: 5, img: img5, name: "product 5" },
-    { id: 6, img: img6, name: "product 6" },
-    { id: 7, img: img7, name: "product 7" },
-    { id: 8, img: img8, name: "product 9" },
-    { id: 9, img: img9, name: "product 9" },
-    { id: 10, img: img10, name: "product 10" },
-    { id: 11, img: img11, name: "product 11" },
-    { id: 12, img: img12, name: "product 12" },
-    { id: 13, img: img13, name: "product 13" },
-    { id: 14, img: img14, name: "product 14" },
-    { id: 15, img: img15, name: "product 15" },
-    { id: 16, img: img16, name: "product 16" },
-    { id: 17, img: img17, name: "product 17" },
-    { id: 18, img: img18, name: "product 18" },
-    { id: 19, img: img19, name: "product 19" },
-    { id: 20, img: img20, name: "product 20" },
+    { id: 1, img: img1, name: "product 1", height: "150px", width: "90px" },
+    { id: 2, img: img2, name: "product 2", height: "120px", width: "80px" },
+    { id: 3, img: img3, name: "product 3", height: "110px", width: "65px" },
+    { id: 4, img: img4, name: "product 4", height: "90px", width: "100px" },
+    { id: 5, img: img5, name: "product 5", height: "160px", width: "87px" },
+    { id: 6, img: img6, name: "product 6", height: "80px", width: "65px" },
+    { id: 7, img: img7, name: "product 7", height: "142px", width: "98px" },
+    { id: 8, img: img8, name: "product 9", height: "170px", width: "100px" },
+    { id: 9, img: img9, name: "product 9", height: "170px", width: "91px" },
+    { id: 10, img: img10, name: "product 10", height: "110px", width: "78px" },
+    { id: 11, img: img11, name: "product 11", height: "120px", width: "60px" },
+    { id: 12, img: img12, name: "product 12", height: "100px", width: "89px" },
+    { id: 13, img: img13, name: "product 13", height: "90px", width: "73px" },
+    { id: 14, img: img14, name: "product 14", height: "95px", width: "98px" },
+    { id: 15, img: img15, name: "product 15", height: "180px", width: "87px" },
+    { id: 16, img: img16, name: "product 16", height: "200px", width: "100px" },
+    { id: 17, img: img17, name: "product 17", height: "210px", width: "91px" },
+    { id: 18, img: img18, name: "product 18", height: "180px", width: "56px" },
+    { id: 19, img: img19, name: "product 19", height: "150px", width: "90px" },
+    { id: 20, img: img20, name: "product 20", height: "135px", width: "110px" },
   ];
 
   //set new id for elements when drag
   const [proId, setProId] = useState(1);
 
-  //number of shelfs
-  const [row, setRow] = useState(3);
+  //row data
+  const [rowData, setRowData] = useState(null);
 
   //when drag function start
   const handleDragStart = (event, id, where) => {
@@ -81,91 +66,103 @@ const NewShelf = () => {
   };
 
   //when drag function drop
-  const handleDrop = (event, rowIndex) => {
+  const handleDrop = (event, rowIndex, res) => {
     const place = event.dataTransfer.getData("place");
+    const productId = event.dataTransfer.getData("text");
 
-    if (place === "cloneFromNewProducts") {
-      event.preventDefault();
+    const product = newProduct.find((item) => item.id.toString() === productId);
 
-      const productId = event.dataTransfer.getData("text");
-      const product = newProduct.find(
-        (item) => item.id.toString() === productId
-      );
+    console.log("res", res, product, res.height, product.height);
 
-      const clonedProduct = document.createElement("img");
-      clonedProduct.src = product.img;
-      clonedProduct.alt = product.name;
-      clonedProduct.draggable = true;
-      clonedProduct.className = "clonedProduct";
-      clonedProduct.id = proId;
-      clonedProduct.style.width = `50px`;
-      clonedProduct.style.marginTop = `5px`;
-      clonedProduct.style.marginLeft = `5px`;
+    const resMatch = res.height.match(/^(\d+)px$/);
+    const proMatch = product.height.match(/^(\d+)px$/);
 
-      clonedProduct.addEventListener("dragstart", (event) =>
-        handleDragStart(event, proId, "moveFromShelf")
-      );
-      clonedProduct.addEventListener("dragend", (event) =>
-        handleDragEnd(event)
-      );
+    let resHeight = resMatch ? parseInt(resMatch[1]) : null;
+    let proHeight = proMatch ? parseInt(proMatch[1]) : null;
 
-      // Get the <td> elements for the current row
-      const tdElements = document.querySelectorAll(`#table-${rowIndex} td`);
+    console.log(resHeight, proHeight, proHeight < resHeight);
 
-      // Find the closest <td> based on the mouse position
-      const mouseX = event.clientX;
-      let closestDistance = Infinity;
-      let closestTd = null;
+    if (proHeight < resHeight) {
+      if (place === "cloneFromNewProducts") {
+        event.preventDefault();
 
-      for (let i = 0; i < tdElements.length; i++) {
-        const rect = tdElements[i].getBoundingClientRect();
-        const tdCenterX = rect.left + rect.width / 2;
-        const distance = Math.abs(mouseX - tdCenterX);
+        console.log("product", product);
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestTd = tdElements[i];
+        const clonedProduct = document.createElement("img");
+        clonedProduct.src = product.img;
+        clonedProduct.alt = product.name;
+        clonedProduct.draggable = true;
+        clonedProduct.className = "clonedProduct";
+        clonedProduct.id = proId;
+        clonedProduct.style.width = `${product?.width}`;
+        clonedProduct.style.height = `${product?.height}`;
+        //   clonedProduct.style.marginTop = `5px`;
+        //   clonedProduct.style.marginLeft = `5px`;
+
+        clonedProduct.addEventListener("dragstart", (event) =>
+          handleDragStart(event, proId, "moveFromShelf")
+        );
+        clonedProduct.addEventListener("dragend", (event) =>
+          handleDragEnd(event)
+        );
+
+        const mouseX = event.clientX;
+        let closestDistance = Infinity;
+        let closestTd = null;
+
+        const tdElements = document.querySelectorAll(`#table-${rowIndex} td`);
+
+        for (let i = 0; i < tdElements.length; i++) {
+          const rect = tdElements[i].getBoundingClientRect();
+          const tdCenterX = rect.left + rect.width / 2;
+          const distance = Math.abs(mouseX - tdCenterX);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestTd = tdElements[i];
+          }
         }
-      }
 
-      // Check if the closest <td> already contains an image
-      if (!closestTd.hasChildNodes()) {
-        // Append the cloned product to the closest <td>
-        closestTd.appendChild(clonedProduct);
-        setProId(proId + 1);
-      } else {
-        console.log("Cannot drop. TD already contains an image.");
-      }
-    } else if (place === "moveFromShelf") {
-      event.preventDefault();
-
-      const productId = event.dataTransfer.getData("text");
-      const productElement = document.getElementById(productId);
-
-      // Find the closest <td> based on the mouse position
-      const mouseX = event.clientX;
-      let closestDistance = Infinity;
-      let closestTd = null;
-
-      const tdElements = document.querySelectorAll(`#table-${rowIndex} td`);
-
-      for (let i = 0; i < tdElements.length; i++) {
-        const rect = tdElements[i].getBoundingClientRect();
-        const tdCenterX = rect.left + rect.width / 2;
-        const distance = Math.abs(mouseX - tdCenterX);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestTd = tdElements[i];
+        if (!closestTd.hasChildNodes()) {
+          const remainingTd = document.createElement("td");
+          remainingTd.classList.add("tableData");
+          closestTd.insertAdjacentElement("afterend", remainingTd);
+          closestTd.appendChild(clonedProduct);
+          setProId(proId + 1);
+        } else {
+          console.log("Cannot drop. TD already contains an image.");
         }
-      }
+      } else if (place === "moveFromShelf") {
+        event.preventDefault();
 
-      // Check <td> already contains an image
-      if (!closestTd.hasChildNodes()) {
-        // Move the product to the closest <td>
-        closestTd.appendChild(productElement);
-      } else {
-        console.log("Cannot drop. TD already contains an image.");
+        const productId = event.dataTransfer.getData("text");
+        const productElement = document.getElementById(productId);
+
+        // Find the closest <td> based on the mouse position
+        const mouseX = event.clientX;
+        let closestDistance = Infinity;
+        let closestTd = null;
+
+        const tdElements = document.querySelectorAll(`#table-${rowIndex} td`);
+
+        for (let i = 0; i < tdElements.length; i++) {
+          const rect = tdElements[i].getBoundingClientRect();
+          const tdCenterX = rect.left + rect.width / 2;
+          const distance = Math.abs(mouseX - tdCenterX);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestTd = tdElements[i];
+          }
+        }
+
+        // Check <td> already contains an image
+        if (!closestTd.hasChildNodes()) {
+          // Move the product to the closest <td>
+          closestTd.appendChild(productElement);
+        } else {
+          console.log("Cannot drop. TD already contains an image.");
+        }
       }
     }
   };
@@ -177,7 +174,6 @@ const NewShelf = () => {
     draggedProduct.style.position = "absolute";
   };
 
-  //remove the image from <td> when drag and drop the image outside shelfParent
   const handleDocumentDrop = (event) => {
     event.preventDefault();
     const productId = event.dataTransfer.getData("text");
@@ -187,10 +183,13 @@ const NewShelf = () => {
       // Check if the drop is outside the shelfParent
       const shelfParent = document.querySelector(".shelfParent");
       if (!shelfParent.contains(event.target)) {
-        // Remove the product from the respective td
+        // Remove the product and the respective td
         const tdParent = productElement.parentElement;
         if (tdParent) {
-          tdParent.removeChild(productElement);
+          const trParent = tdParent.parentElement;
+          if (trParent) {
+            trParent.removeChild(tdParent);
+          }
         }
       }
     }
@@ -203,50 +202,67 @@ const NewShelf = () => {
   document.addEventListener("drop", handleDocumentDrop);
   document.addEventListener("dragover", handleDocumentDragOver);
 
+  useEffect(() => {
+    setRowData(jsonData);
+  }, []);
+
+  console.log("rowData", rowData);
+
+  let currentTdElement = document.querySelectorAll(".tableData");
+
+  console.log("currentTdElement", currentTdElement);
+
   return (
     <>
       <h1 style={{ textAlign: "center" }}>Shelf</h1>
 
       <div style={{ display: "flex" }}>
         <div className="newProductParent">
-          {newProduct.map((item) => (
-            <button
-              className="newProductChild"
-              key={item.id}
-              draggable
-              onDragStart={(event) =>
-                handleDragStart(event, item.id, "cloneFromNewProducts")
-              }
-            >
-              <img src={item.img} alt={item.name} />
-            </button>
-          ))}
+          {newProduct.map((item) => {
+            // console.log("item", item);
+            return (
+              <button
+                className="newProductChild"
+                key={item.id}
+                draggable
+                onDragStart={(event) =>
+                  handleDragStart(event, item.id, "cloneFromNewProducts", item)
+                }
+              >
+                <img
+                  src={item.img}
+                  style={{ height: `${item?.height}`, width: `${item?.width}` }}
+                  alt={item.name}
+                />
+              </button>
+            );
+          })}
         </div>
 
         <div className="shelfParent">
-          {[...Array(row)].map((_, rowIndex) => (
-            <table
-              key={rowIndex}
-              id={`table-${rowIndex}`}
-              onDrop={(event) =>
-                handleDrop(event, rowIndex, "dropInShelfParent")
-              }
-              onDragOver={handleDragOver}
-              className="rowParent"
-            >
-              <tbody style={{ width: "100%" }}>
-                <tr className="tableRow">
-                  {[...Array(15)].map((_, colIndex) => (
-                    <td className="tableData" key={colIndex}></td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          ))}
+          {rowData?.rows.map((_, rowIndex) => {
+            // console.log("check", _);
+            return (
+              <table
+                key={rowIndex}
+                id={`table-${rowIndex}`}
+                onDrop={(event) => handleDrop(event, rowIndex, _)}
+                onDragOver={handleDragOver}
+                className="rowParent"
+                style={{ height: `${_.height}`, width: `${rowData.width}` }}
+              >
+                <tbody style={{ width: `${rowData.width}` }}>
+                  <tr className="tableRow">
+                    <td className="tableData" key={0}></td>
+                  </tr>
+                </tbody>
+              </table>
+            );
+          })}
         </div>
       </div>
 
-      <div className="btnParent">
+      {/* <div className="btnParent">
         <button
           className="btnAddRem"
           disabled={row === 5}
@@ -266,7 +282,7 @@ const NewShelf = () => {
         >
           Remove Row
         </button>
-      </div>
+      </div> */}
     </>
   );
 };
