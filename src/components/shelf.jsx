@@ -189,7 +189,7 @@ const NewShelf = () => {
     }
   };
 
-  //remove image when dropped outside shelf
+  // remove image when dropped outside shelf
   const handleDocumentDrop = (event) => {
     event.preventDefault();
 
@@ -201,31 +201,43 @@ const NewShelf = () => {
       const indexValue = event.dataTransfer.getData("index");
 
       // Check if rowData and indexValue exist
-      if (rowData && rowData.rows.length && indexValue !== "") {
+      if (rowData && rowData.rows && indexValue !== "") {
         const updatedRows = [...rowData.rows];
         const rowIndex = parseInt(indexValue);
 
-        // Check if product exists in the row
-        const productIndex = updatedRows[rowIndex].data.findIndex(
-          (item) => product.id === item.id
-        );
+        // Check if rowIndex is within the valid range
+        if (rowIndex >= 0 && rowIndex < updatedRows.length) {
+          const row = updatedRows[rowIndex];
 
-        if (productIndex !== -1) {
-          // Remove the product from the row
-          updatedRows[rowIndex].data.splice(productIndex, 1);
+          // Check if row.occupiedwidth is defined
+          if (row && typeof row.occupiedwidth !== "undefined") {
+            const productIndex = row.data.findIndex(
+              (item) => product.id === item.id
+            );
 
-          // Update occupiedwidth and remainingwidth
-          updatedRows[rowIndex].occupiedwidth -= parseInt(product.width);
-          updatedRows[rowIndex].remainingwidth += parseInt(product.width);
+            if (productIndex !== -1) {
+              // Remove the product from the row
+              row.data.splice(productIndex, 1);
 
-          // Update rowData
-          setRowData({ ...rowData, rows: updatedRows });
+              // Update occupiedwidth and remainingwidth
+              row.occupiedwidth -= parseInt(product.width);
+              row.remainingwidth += parseInt(product.width);
 
-          // display toast when image removed successfully
-          toast.success(`${product.name} removed successfully`, {
-            position: toast.POSITION.BOTTOM_LEFT,
-          });
+              setRowData({ ...rowData, rows: updatedRows });
+
+              // display toast when image removed successfully
+              toast.success(`${product.name} removed successfully`, {
+                position: toast.POSITION.BOTTOM_LEFT,
+              });
+            }
+          } else {
+            console.error("Invalid row data: occupiedwidth is undefined");
+          }
+        } else {
+          console.error("Invalid rowIndex: Out of range");
         }
+      } else {
+        console.error("Invalid rowData or indexValue");
       }
     }
   };
