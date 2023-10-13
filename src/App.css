@@ -1,31 +1,29 @@
-body {
-  margin: 0;
-}
 * {
   box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+}
+
 .shelfParent {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   background-color: black;
   padding: 20px;
-  /* width: 75%; */
   height: fit-content;
+  border-radius: 25px;
 }
 
 .rowParent {
   position: relative;
   display: flex;
-  justify-content: space-around;
-  background-color: dimgray;
-  gap: 10px;
+  gap: 2px;
   height: 90px;
-}
-
-.elementCol {
-  width: 100px;
-  height: 50px;
+  align-items: end;
+  border-bottom: 8px solid #e7dbd7;
+  border-radius: 15px;
 }
 
 .newProductParent {
@@ -40,21 +38,10 @@ body {
   overflow-y: scroll;
 }
 
-.newProductParent img {
-  /* width: 100%;
-  height: 100%; */
-  object-fit: contain;
-}
-
-.newProductParent button {
+.newProductChild {
+  width: calc(33.33333% - 16px);
   border: none;
   background: none;
-}
-
-.newProductChild {
-  /* max-height: 72px;
-  max-width: 72px; */
-  width: calc(33.33333% - 16px);
 }
 
 .btnParent {
@@ -69,22 +56,4 @@ body {
   border: none;
   border-radius: 5px;
   font-weight: 700;
-}
-
-.tableRow {
-  width: 100%;
-  display: flex;
-  gap: 5px;
-  /* justify-content: space-around; */
-  /* padding: 5px; */
-  height: 100%;
-  align-items: baseline;
-}
-
-.tableData {
-  /* width: 65px; */
-  /* width: inherit; */
-  /* height: 65px; */
-  height: 100%;
-  /* background-color: dimgray; */
 }
