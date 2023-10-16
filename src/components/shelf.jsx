@@ -21,6 +21,7 @@ import img17 from "../images/RACK/Slice 17.png";
 import img18 from "../images/RACK/Slice 18.png";
 import img19 from "../images/RACK/Slice 19.png";
 import img20 from "../images/RACK/Slice 20.png";
+import { pxToCm } from "../utilities";
 
 const NewShelf = () => {
   //shelf data
@@ -110,16 +111,15 @@ const NewShelf = () => {
 
     let resHeight = parseInt(res.height);
     let proHeight = parseInt(product.height);
+    let proWidth = parseInt(product.width);
 
     //check dropped product is fit for this row
-    if (
-      proHeight < resHeight &&
-      res.remainingwidth >= parseInt(product.width)
-    ) {
+    if (proHeight < resHeight && res.remainingwidth >= proWidth) {
       //check the if dragged from fromNewProducts
       if (place === "fromNewProducts") {
+        product.defaultId = product.id;
         //set unique id for images when dragged from fromNewProducts
-        product.id = `product-${uniqueId}`;
+        product.id = `uniqueId-${uniqueId}`;
         setUniqueId(uniqueId + 1);
 
         // Clone the product if it's dragged from the new products
@@ -251,6 +251,42 @@ const NewShelf = () => {
   document.addEventListener("drop", handleDocumentDrop);
   document.addEventListener("dragover", handleDocumentDragOver);
 
+  //clone and add image, when its clicked in shelfParent
+  const cloneImage = (rowIndex, res, product) => {
+    let proWidth = parseInt(product.width);
+
+    if (res.remainingwidth >= proWidth) {
+      const updatedRows = [...rowData.rows];
+      const row = updatedRows[rowIndex];
+
+      //find the clicked image from newProducts
+      let findProduct = newProduct.find(
+        (item) => item.id == parseInt(product.defaultId)
+      );
+
+      //set unique id
+      findProduct.defaultId = product.defaultId;
+
+      findProduct.id = `uniqueId-${uniqueId}`;
+      setUniqueId(uniqueId + 1);
+
+      //push cloned image
+      row.data.push(findProduct);
+
+      // Update occupiedwidth and remainingwidth
+      row.occupiedwidth =
+        parseInt(row.occupiedwidth) + parseInt(findProduct.width);
+      row.remainingwidth =
+        parseInt(row.remainingwidth) - parseInt(findProduct.width);
+      setRowData({ ...rowData, rows: updatedRows });
+    } else {
+      // display toast when image doesn't fit
+      toast.warning(`this row fully occupied , try other rows!`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+    }
+  };
+
   //shelf details
   console.log("rowData", rowData);
 
@@ -258,8 +294,8 @@ const NewShelf = () => {
     <>
       <h1 style={{ textAlign: "center" }}>{rowData?.name}</h1>
 
-      <div style={{ display: "flex" }}>
-        <div className="newProductParent">
+      <div style={{ display: "flex", width: "100%" }}>
+        <div className="newProductParent" style={{ width: "25%" }}>
           {newProduct?.map((item) => {
             return (
               <button
@@ -278,34 +314,63 @@ const NewShelf = () => {
           })}
         </div>
 
-        <div className="shelfParent">
-          {rowData?.rows?.map((res, rowIndex) => {
-            return (
-              <div
-                key={rowIndex}
-                id={`table-${rowIndex}`}
-                className="rowParent"
-                style={{ height: res.height, width: rowData.width }}
-                onDrop={(e) => handleDrop(e, rowIndex, res)}
-                onDragOver={(e) => e.preventDefault()}
-              >
-                {res.data?.map((product) => {
-                  return (
-                    <img
-                      key={product.id}
-                      src={product.img}
-                      alt={product.name}
-                      style={{ width: product.width, height: product.height }}
-                      draggable
-                      onDragStart={(e) =>
-                        handleDragStart(e, product, "fromShelfParent", rowIndex)
-                      }
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
+        <div style={{ width: "75%" }}>
+          <div className="shelfParent">
+            {rowData?.rows?.map((res, rowIndex) => {
+              return (
+                <div
+                  key={rowIndex}
+                  style={{ display: "flex", columnGap: "10px" }}
+                >
+                  <div
+                    key={rowIndex}
+                    id={`table-${rowIndex}`}
+                    className="rowParent"
+                    style={{ height: res.height, width: rowData.width }}
+                    onDrop={(e) => handleDrop(e, rowIndex, res)}
+                    onDragOver={(e) => e.preventDefault()}
+                  >
+                    {res.data?.map((product) => {
+                      return (
+                        <img
+                          key={product.id}
+                          src={product.img}
+                          alt={product.name}
+                          style={{
+                            width: product.width,
+                            height: product.height,
+                          }}
+                          draggable
+                          onDragStart={(e) =>
+                            handleDragStart(
+                              e,
+                              product,
+                              "fromShelfParent",
+                              rowIndex
+                            )
+                          }
+                          onClick={() => cloneImage(rowIndex, res, product)}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div style={{ display: "flex", gap: "5px" }}>
+                    <div className="rowHeight"></div>
+                    <p style={{ color: "white", alignSelf: "center" }}>
+                      Height : {pxToCm(parseInt(res.height)).toFixed(2)} CM
+                      <br />
+                      Remaining Width :{" "}
+                      {pxToCm(parseInt(res.remainingwidth)).toFixed(2)} CM
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="showWidth"></div>
+          <p style={{ textAlign: "center" }}>
+            Total Shelf Width : {pxToCm(parseInt(rowData?.width)).toFixed(2)} CM
+          </p>
         </div>
       </div>
 
@@ -331,18 +396,6 @@ const NewShelf = () => {
         </button>
       </div> */}
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <ToastContainer />
     </>
   );

@@ -23,7 +23,7 @@ body {
   height: 90px;
   align-items: end;
   border-bottom: 8px solid #e7dbd7;
-  border-radius: 15px;
+  /* border-radius: 15px; */
 }
 
 .newProductParent {
@@ -56,4 +56,17 @@ body {
   border: none;
   border-radius: 5px;
   font-weight: 700;
+}
+
+.showWidth {
+  height: 50px;
+  border: 2px solid black;
+  border-top: none;
+  width: 83%;
+}
+
+.rowHeight {
+  border: 1px solid white;
+  border-left: none;
+  width: 25px;
 }
