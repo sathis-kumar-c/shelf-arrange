@@ -4,16 +4,17 @@
 
 body {
   margin: 0;
+  background-color: #f2f2f2 !important;
 }
 
 .shelfParent {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
-  background-color: black;
-  padding: 20px;
+  padding: 10px;
   height: fit-content;
-  border-radius: 25px;
+  margin: 10px;
+  outline: double;
 }
 
 .rowParent {
@@ -22,8 +23,8 @@ body {
   gap: 2px;
   height: 90px;
   align-items: end;
-  border-bottom: 8px solid #e7dbd7;
-  /* border-radius: 15px; */
+  border-bottom: 10px solid #c0c0c0;
+  background-color: dimgray;
 }
 
 .newProductParent {
@@ -44,29 +45,66 @@ body {
   background: none;
 }
 
-.btnParent {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  gap: 10px;
-}
-
-.btnAddRem {
-  padding: 15px 30px;
-  border: none;
-  border-radius: 5px;
-  font-weight: 700;
-}
-
-.showWidth {
+/* .showWidth {
   height: 50px;
   border: 2px solid black;
   border-top: none;
-  width: 83%;
-}
+  margin-left: 10px;
+} */
 
 .rowHeight {
-  border: 1px solid white;
+  border: 1px solid black;
   border-left: none;
   width: 25px;
+}
+
+.pdfBtn,
+.btnExport {
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  background-color: steelblue;
+  color: white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.login_btn {
+  border: none;
+  padding: 10px 50px;
+  font-weight: 600;
+  font-size: 16px;
+  background-color: #4272d7;
+  color: white;
+  border-radius: 25px;
+}
+
+.login_parent {
+  width: 400px;
+  background-color: #fff;
+  text-align: center;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 100px 30px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.input_login {
+  height: 50px;
+  width: 100%;
+  border: none;
+}
+
+.btnsParent {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 25px;
 }
