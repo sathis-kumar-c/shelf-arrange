@@ -94,6 +94,7 @@ body {
   gap: 20px;
   padding: 100px 30px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 
 .input_login {

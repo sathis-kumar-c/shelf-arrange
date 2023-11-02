@@ -355,8 +355,8 @@ const NewShelf = () => {
     let dom = e.target;
 
     if (
-      parseInt(calculatePercentageInPixels(res.height, perVal)) >=
-      parseInt(calculatePercentageInPixels(currentProdcut.height, perVal))
+      parseInt(calculatePercentageInPixels(res?.height, perVal)) >=
+      parseInt(calculatePercentageInPixels(currentProdcut?.height, perVal))
     ) {
       dom.style.backgroundColor = "green";
     } else {
@@ -426,7 +426,7 @@ const NewShelf = () => {
           })}
         </div>
 
-        <div style={{ width: "80%" }}>
+        <div style={{ width: "75%" }}>
           <div className="shelfParent">
             {rowData?.rows?.map((res, rowIndex) => {
               return (
